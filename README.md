@@ -37,3 +37,6 @@ void debug_path() {
 
 Output:
 `[noalloc] 1 allocation(s) occurred in scope.`
+
+## ⭐ If you find this useful, give it a star!
+

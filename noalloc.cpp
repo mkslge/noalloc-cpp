@@ -9,12 +9,15 @@
 
 namespace NoAllocDetail {
     thread_local std::size_t alloc_count = 0;
+    thread_local int noalloc_depth = 0;
 }
 
-
-
  void* operator new(std::size_t size) {
-    NoAllocDetail::alloc_count++;
+
+     if (NoAllocDetail::noalloc_depth != 0) {
+         NoAllocDetail::alloc_count++;
+     }
+
     void*ptr = std::malloc(size);
     if (!ptr) {
         throw std::bad_alloc();
@@ -23,7 +26,9 @@ namespace NoAllocDetail {
 }
 
 void* operator new[](std::size_t size) {
-    NoAllocDetail::alloc_count++;
+    if (NoAllocDetail::noalloc_depth != 0) {
+        NoAllocDetail::alloc_count++;
+    }
     void*ptr = std::malloc(size);
     if (!ptr) {
         throw std::bad_alloc();
@@ -41,11 +46,14 @@ void operator delete[](void* ptr) noexcept {
 }
 
 
-noalloc::noalloc(noalloc_mode mode) : alloc_at_start_(NoAllocDetail::alloc_count), mode_(mode) {}
+noalloc::noalloc(noalloc_mode mode) : alloc_at_start_(NoAllocDetail::alloc_count), mode_(mode) {
+    NoAllocDetail::noalloc_depth++;
+}
 
 noalloc::~noalloc() noexcept {
-     size_t alloc_at_end = NoAllocDetail::alloc_count;
-     if (alloc_at_end > alloc_at_start_) {
+    NoAllocDetail::noalloc_depth--;
+    size_t alloc_at_end = NoAllocDetail::alloc_count;
+    if (alloc_at_end > alloc_at_start_) {
          if (mode_ == noalloc_mode::terminate) {
              std::terminate();
          } else if (mode_ == noalloc_mode::log){
@@ -53,6 +61,7 @@ noalloc::~noalloc() noexcept {
              std::cerr << "[noalloc] "
              << diff
              << " allocation(s) occurred in scope.\n";
+
          }
      }
  }

@@ -38,5 +38,12 @@ void debug_path() {
 Output:
 `[noalloc] 1 allocation(s) occurred in scope.`
 
+---
+
+### Note:
+    Do not use this if your program already overrides new or delete,
+    this breaks the ODR and will lead to compile-time errors.
+
+---
 ## ⭐ If you find this useful, give it a star!
 

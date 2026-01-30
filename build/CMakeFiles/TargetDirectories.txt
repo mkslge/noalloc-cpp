@@ -1,0 +1,4 @@
+/Users/markseeliger/CLionProjects/noalloc/build/CMakeFiles/basic.dir
+/Users/markseeliger/CLionProjects/noalloc/build/CMakeFiles/nested.dir
+/Users/markseeliger/CLionProjects/noalloc/build/CMakeFiles/edit_cache.dir
+/Users/markseeliger/CLionProjects/noalloc/build/CMakeFiles/rebuild_cache.dir

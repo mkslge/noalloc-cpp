@@ -1,4 +1,4 @@
-# noalloc README.md
+# noalloc 
 
 A tiny, header-only RAII guard that **checks for heap allocations inside a scope**.
 
